@@ -36,6 +36,12 @@ php artisan migrate
 ```sh
 php artisan vendor:publish --tag="translation-config" -force
 ```
+
+## Publish the modify admin header file
+```sh
+php artisan vendor:publish --tag="translation-views" -force
+```
+
 ## Contributing
 
 Contributions are welcome, if you are thinking of adding a feature, please submit an issue first. So we can determine whether it should be included.

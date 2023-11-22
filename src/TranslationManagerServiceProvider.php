@@ -62,7 +62,9 @@ class TranslationManagerServiceProvider extends ServiceProvider
                 "{$this->root}/config/translation-loader.php" => config_path("translation-loader.php"),
             ], 'translation-config');
 
-            $this->publishes([__DIR__ . '/../resources/views/partials/navigation' => resource_path('views/vendor/adminhub/partials/navigation'),], 'translation-views');
+            $this->publishes([
+                __DIR__ . '/../resources/views/partials/navigation' => resource_path('views/vendor/adminhub/partials/navigation'),
+                ], 'translation-views');
 
             $this->commands(
                 [
