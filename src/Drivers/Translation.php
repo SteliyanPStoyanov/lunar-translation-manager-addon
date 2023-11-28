@@ -39,9 +39,9 @@ abstract class Translation
                 foreach ($groups as $group => $translations) {
                     foreach ($translations as $key => $value) {
                         if (Str::contains($group, 'single')) {
-                            $this->addSingleTranslation($language, $group, $key);
+                            $this->addSingleTranslation($language, $group, $key ,$value);
                         } else {
-                            $this->addGroupTranslation($language, $group, $key);
+                            $this->addGroupTranslation($language, $group, $key ,$value);
                         }
                     }
                 }

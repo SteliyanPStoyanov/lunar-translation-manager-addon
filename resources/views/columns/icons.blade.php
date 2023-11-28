@@ -9,9 +9,6 @@
                     wire:click.prevent="addTrans({{$value['record']->id}} , '{{$value['code']}}')">
                  {!! \Lunar\Hub\LunarHub::icon('x-circle', 'lt-text-red-600') !!}
             </button>
-
         @endif
-
     </span>
-
 </div>

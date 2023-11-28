@@ -120,7 +120,7 @@ class TranslationIndex extends Component
 
         return view('translation::livewire.pages.translation.index')
             ->layout('adminhub::layouts.app', [
-                'title' => 'Translations',
+                'title' => __('translation::common.title'),
             ]);
     }
 }
