@@ -11,7 +11,7 @@ abstract class Translation
     /**
      * Find all the translations in the app without translation for a given language.
      *
-     * @param  string  $language
+     * @param string $language
      * @return array
      */
     public function findMissingTranslations($language)
@@ -25,12 +25,15 @@ abstract class Translation
     /**
      * Save all the translations in the app without translation for a given language.
      *
-     * @param  string  $language
+     * @param string $language
      * @return void
      */
     public function saveMissingTranslations($language = false)
     {
-        $languages = $language ? [$language => $language] : $this->allLanguages();
+        $codes = array_column(config('translation-manager.available_locales'), 'code');
+        $configLang = array_combine($codes, $codes);
+
+        $languages = $language ? [$language => $language] : $configLang;
 
         foreach ($languages as $language => $name) {
             $missingTranslations = $this->findMissingTranslations($language);
@@ -39,9 +42,9 @@ abstract class Translation
                 foreach ($groups as $group => $translations) {
                     foreach ($translations as $key => $value) {
                         if (Str::contains($group, 'single')) {
-                            $this->addSingleTranslation($language, $group, $key ,$value);
+                            $this->addSingleTranslation($language, $group, $key, $value);
                         } else {
-                            $this->addGroupTranslation($language, $group, $key ,$value);
+                            $this->addGroupTranslation($language, $group, $key, $value);
                         }
                     }
                 }
@@ -52,7 +55,7 @@ abstract class Translation
     /**
      * Get all translations for a given language merged with the source language.
      *
-     * @param  string  $language
+     * @param string $language
      * @return Collection
      */
     public function getSourceLanguageTranslationsWith($language)
@@ -78,14 +81,14 @@ abstract class Translation
     /**
      * Filter all keys and translations for a given language and string.
      *
-     * @param  string  $language
-     * @param  string  $filter
+     * @param string $language
+     * @param string $filter
      * @return Collection
      */
     public function filterTranslationsFor($language, $filter)
     {
         $allTranslations = $this->getSourceLanguageTranslationsWith($language);
-        if (! $filter) {
+        if (!$filter) {
             return $allTranslations;
         }
 
@@ -109,7 +112,7 @@ abstract class Translation
     public function add(Request $request, $language, $isGroupTranslation)
     {
         $namespace = $request->has('namespace') && $request->get('namespace') ? "{$request->get('namespace')}::" : '';
-        $group = $namespace.$request->get('group');
+        $group = $namespace . $request->get('group');
         $key = $request->get('key');
         $value = $request->get('value') ?: '';
 
