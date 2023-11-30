@@ -8,6 +8,7 @@ use Lunar\Hub\Http\Livewire\Traits\Notifies;
 use Lunar\Hub\Models\SavedSearch;
 use Lunar\LivewireTables\Components\Columns\TextColumn;
 use Lunar\LivewireTables\Components\Filters\SelectFilter;
+use Lunar\LivewireTables\Components\Filters\CheckboxFilter;
 use Lunar\LivewireTables\Components\Table;
 use Lunar\TranslationManager\Http\Livewire\Tables\Components\Columns\IconColumn;
 use Lunar\TranslationManager\Tables\TranslationsTableBuilder;
@@ -74,22 +75,47 @@ class TranslationTable extends Table
         }
 
         $this->tableBuilder->addFilter(
-            SelectFilter::make('group')->options(function () use ($groupsArray) {
-                $statuses = collect($groupsArray);
-                return collect([
-                    null => 'All groups',
-                ])->merge($statuses);
-            })->query(function ($filters, $query) {
-                $value = $filters->get('group');
+            SelectFilter::make('group')
+                ->heading(__('translation::tables.filters.group'))
+                ->options(function () use ($groupsArray) {
+                    $statuses = collect($groupsArray);
+                    return collect([
+                        null => 'All groups',
+                    ])->merge($statuses);
+                })
+                ->query(function ($filters, $query) {
+                    $value = $filters->get('group');
+                    if ($value) {
+                        $query->where('group', $value);
+                    }
+                }));
 
-                if ($value) {
-                    $query->where('group', $value);
-                }
-            })
-        );
+
         $baseAddColumns = [];
         foreach (config('translation-manager.available_locales') as $locale) {
             $localeCode = $locale['code'];
+
+            $this->tableBuilder->addFilter(
+                SelectFilter::make('text' . $localeCode)
+                     ->heading(__('translation::tables.filters.text' , ['lang' =>$localeCode]))
+                    ->options(function () use ($localeCode) {
+                    return collect([
+                        null => __('translation::tables.filters.option.all'),
+                        'not_translated' => __('translation::tables.filters.option.not_translated'),
+                        'translated' => __('translation::tables.filters.option.translated')
+                    ]);
+                })->query(function ($filters, $query) use($localeCode) {
+                    $value = $filters->get('text'.$localeCode);
+                    if ($value === 'not_translated') {
+                        $query->whereJsonContains('text->'.$localeCode, '');
+                    }
+                    if ($value === 'translated') {
+                        $query->whereRaw("json_unquote(json_extract(`text`, '$.{$localeCode}')) <> ''");
+                    }
+                })
+            );
+
+
             $baseAddColumns[] = IconColumn::make('text' . $locale['code'], function ($record) use ($localeCode) {
                 return ['code' => $localeCode, 'record' => $record];
             })->heading(
