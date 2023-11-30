@@ -5,7 +5,8 @@
         </strong>
         <div class="text-right">
             <x-hub::button wire:click.prevent="synchronize">
-                {{ __('translation::common.synchronize') }}</x-hub::button>
+                {{ __('translation::common.synchronize') }}
+            </x-hub::button>
         </div>
     </div>
     @livewire('translations.admin.translation.table')

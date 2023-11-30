@@ -131,7 +131,7 @@ class TranslationTable extends Table
         $this->resetSavedSearch();
 
         $this->notify(
-            __('pages::notifications.saved_searches.deleted')
+            __('translation::notifications.saved_searches.deleted')
         );
     }
 
@@ -154,7 +154,7 @@ class TranslationTable extends Table
             'filters' => $this->filters,
         ]);
 
-        $this->notify('Search saved');
+        $this->notify(__('translation::notifications.saved_searches.saved'));
 
         $this->savedSearchName = null;
 

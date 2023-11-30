@@ -18,7 +18,6 @@
             </span>
             </span>
         </button>
-
         <div x-ref="panel" x-show="isOpen" x-cloak x-on:mouseleave="isOpen = false"
              x-transition:enter-start="opacity-0 scale-95" x-transition:leave-end="opacity-0 scale-95"
              class="ffi-dropdown-panel absolute z-10 bg-gray- divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10 max-w-[14rem]"

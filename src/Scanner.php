@@ -51,10 +51,22 @@ class Scanner
                 foreach ($matches[2] as $key) {
                     if (preg_match("/(^[a-zA-Z0-9:_-]+([.][^\1)\ ]+)+$)/siU", $key, $arrayMatches)) {
                         [$file, $k] = explode('.', $arrayMatches[0], 2);
-                        $results['group'][$file][$k] = '';
+                        $trans = __($key);
+                        if ($trans !== $key) {
+                            $results['group'][$file][$k] = $trans;
+                        } else {
+                            $results['group'][$file][$k] = '';
+                        }
+
                         continue;
                     } else {
-                        $results['single']['single'][$key] = '';
+                        $trans = __($key);
+                        if ($trans !== $key) {
+                            $results['single']['single'][$key] = $trans;
+                        } else {
+                            $results['single']['single'][$key] = '';
+                        }
+
                     }
                 }
             }

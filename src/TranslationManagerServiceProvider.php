@@ -29,12 +29,13 @@ class TranslationManagerServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'translation');
         $this->app->booted(function () {
             $manifest = $this->app->get(Manifest::class);
             $manifest->addPermission(function (Permission $permission) {
-                $permission->name = 'Manage translation';
+                $permission->name = __('translation::common.manage.translation.title');
                 $permission->handle = 'manage-translation'; // or 'group:handle to group permissions
-                $permission->description = 'Allow the staff member to manage translation';
+                $permission->description = __('translation::common.manage.translation.description');
             });
         });
 
@@ -52,9 +53,6 @@ class TranslationManagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'translation');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'translation');
-
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

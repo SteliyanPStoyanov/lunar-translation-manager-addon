@@ -8,11 +8,8 @@
             <x-hub::branding.logo class="w-24 hidden sm:block" />
         </div>
     </div>
-
-
     <div class="flex">
         @livewire('translations.admin.translation.language-switcher')
-
         @include('adminhub::partials.navigation.header-user-dropdown')
     </div>
 </header>
